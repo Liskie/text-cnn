@@ -79,7 +79,6 @@ if __name__ == '__main__':
     criterion = nn.CrossEntropyLoss().to(device)
     optimizer = optim.SGD(model.parameters(), lr=learning_rate)
 
-
     # Train
     batch_count = 0
     loss_sum = 0

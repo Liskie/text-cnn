@@ -40,7 +40,8 @@ class TextCNN(nn.Module):
         x_embed = self.embedding(x).permute(0, 2, 1)
 
         x_convs = [
-            self.relu(conv(x_embed))
+            conv(x_embed)
+            # self.relu(conv(x_embed))
             for conv in self.convs
         ]
 
