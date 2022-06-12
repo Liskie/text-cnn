@@ -20,6 +20,7 @@ parser.add_argument('--epoch_num', type=int, default=20)
 parser.add_argument('--text_max_len', type=int, default=200)
 parser.add_argument('--lr', type=float, default=0.01)
 parser.add_argument('--batch_size', type=int, default=128)
+parser.add_argument('--dataset', type=str, choices=['small', 'full'], default='small')
 args = parser.parse_args()
 
 
@@ -34,6 +35,15 @@ if __name__ == '__main__':
     batch_size = args.batch_size
     label_num = 2
 
+    if args.dataset == 'small':
+        train_data_dir = 'aclImdb/small-train'
+        test_data_dir = 'aclImdb/small-train'
+    elif args.dataset == 'full':
+        train_data_dir = 'aclImdb/train'
+        test_data_dir = 'aclImdb/test'
+    else:
+        raise NotImplementedError
+
     device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 
     # Init
@@ -46,14 +56,14 @@ if __name__ == '__main__':
             word2index[line.strip()] = len(word2index)
     index2word = {v: k for k, v in word2index.items()}
 
-    train_set = IMDBDataset(data_dir='aclImdb/small-train',
+    train_set = IMDBDataset(data_dir=train_data_dir,
                             word2index=word2index)
 
     train_iter = DataLoader(dataset=train_set,
                             batch_size=batch_size,
                             num_workers=2)
 
-    test_set = IMDBDataset(data_dir='aclImdb/small-train',
+    test_set = IMDBDataset(data_dir=test_data_dir,
                            word2index=word2index)
 
     test_iter = DataLoader(dataset=train_set,
