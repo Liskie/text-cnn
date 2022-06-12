@@ -32,6 +32,7 @@ class TextCNN(nn.Module):
             for kernel_size in self.kernel_sizes
         ])
         self.relu = nn.ReLU()
+        self.softmax = nn.Softmax(dim=-1)
 
         self.linear = nn.Linear(in_features=hidden_size * len(self.kernel_sizes), out_features=self.label_num)
 
@@ -54,6 +55,7 @@ class TextCNN(nn.Module):
         x_cat = x_cat.view(batch_size, -1)
 
         x_res = self.linear(x_cat)
+        x_res = self.softmax(x_res)
 
         return x_res
 

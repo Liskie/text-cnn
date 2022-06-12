@@ -15,7 +15,7 @@ torch.manual_seed(123)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--embedding_size', type=int, default=100)
-parser.add_argument('--hidden_size', type=int, default=256)
+parser.add_argument('--hidden_size', type=int, default=10)
 parser.add_argument('--epoch_num', type=int, default=20)
 parser.add_argument('--text_max_len', type=int, default=200)
 parser.add_argument('--lr', type=float, default=0.01)
