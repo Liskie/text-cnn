@@ -1,5 +1,6 @@
 import argparse
 
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -80,32 +81,23 @@ if __name__ == '__main__':
     optimizer = optim.SGD(model.parameters(), lr=learning_rate)
 
     # Train
-    batch_count = 0
-    loss_sum = 0
+    losses = []
     for epoch in trange(epoch_num, desc='Training: '):
         for data, labels in train_iter:
-            # if torch.cuda.is_available():
-            #     data = data.cuda()
-            #     labels = labels.cuda()
             data = data.to(device)
             labels = labels.to(device)
 
-            # input_data = embedding(autograd.Variable(data))
             out = model(Variable(data))
             loss = criterion(out, Variable(labels))
 
-            loss_sum += loss.data.item()
-            batch_count += 1
-
-            if batch_count % 100 == 0:
-                print(f'Epoch {epoch}, current loss = {loss_sum / 100:.06f}')
-
-                loss_sum = 0
-                batch_count = 0
+            losses.append(loss.data.item())
 
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+
+        print(f'Epoch {epoch}, current loss = {np.mean(losses):.06f}')
+        losses = []
         # save the model in every epoch
         model.save(f'checkpoints/epoch_{epoch}.ckpt')
 
