@@ -62,7 +62,8 @@ if __name__ == '__main__':
 
     train_iter = DataLoader(dataset=train_set,
                             batch_size=batch_size,
-                            num_workers=2)
+                            num_workers=2,
+                            shuffle=True)
 
     test_set = IMDBDataset(data_dir=test_data_dir,
                            word2index=word2index)
